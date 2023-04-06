@@ -7,8 +7,6 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpService, AuthService } from 'src/app/core/services';
 import * as xlsx from 'xlsx';
 const Excel_Extension = '.xlsx';
-import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
-import { TranslateService } from '@ngx-translate/core';
 import * as $ from 'jquery';
 
 @Component({
@@ -85,9 +83,8 @@ export class SentAlertComponent implements OnInit {
   constructor(private http: HttpService,
     private toastr: ToastrService,
     private activeRoute: ActivatedRoute, private router: Router,
-    private dtPipe: DatePipe, public translate: TranslateService,
+    private dtPipe: DatePipe,
     private authService: AuthService) {
-    translate.setDefaultLang(authService.currentLanguage);
   }
 
   ngOnInit(): void {
@@ -788,7 +785,6 @@ export class SentAlertComponent implements OnInit {
       };
     }
 
-    new AngularCsv(this.ExportExcelAndCsvList, 'AlertDetail', options);
   }
 
   RSVPQuesExportExcelAndCsvList: any = [];
@@ -845,7 +841,6 @@ export class SentAlertComponent implements OnInit {
       headers: ['Logon Name', 'Machine Name', 'Question 1', 'Answer', 'Question 2', 'Reason']
     };
 
-    new AngularCsv(this.RSVPQuesExportExcelAndCsvList, 'RSVPAlertDetail', options);
   }
 
 }

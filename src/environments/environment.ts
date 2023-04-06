@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://localhost:8000'
-  apiUrl: 'http://2bofficedubai.ddns.net:8002'
+  apiUrl: 'http://2bofficedubai.ddns.net:8001'
 
   // apiUrl: 'https://dewaserv5384be.dewa.gov.ae'
   

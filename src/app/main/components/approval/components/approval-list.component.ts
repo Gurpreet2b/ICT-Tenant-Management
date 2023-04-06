@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpService, AuthService } from 'src/app/core/services';
 import * as $ from 'jquery';
-import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-approval-list',
   templateUrl: './approval-list.component.html',
@@ -34,10 +33,9 @@ export class ApprovalListComponent implements OnInit {
 
   constructor(private http: HttpService,
     private toastr: ToastrService, private router: Router,
-    private activeRoute: ActivatedRoute, public translate: TranslateService,
+    private activeRoute: ActivatedRoute,
     private dtPipe: DatePipe, public fb: FormBuilder,
     private authService: AuthService) {
-    translate.setDefaultLang(authService.currentLanguage);
   }
 
   ngOnInit(): void {

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
