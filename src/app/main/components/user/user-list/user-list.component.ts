@@ -10,11 +10,11 @@ const Excel_Extension = '.xlsx';
 import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-sent-alert',
-  templateUrl: './sent-alert.component.html',
-  styleUrls: ['./sent-alert.component.css'],
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.css'],
 })
-export class SentAlertComponent implements OnInit {
+export class UserListComponent implements OnInit {
   @ViewChild('PopupAlertepltable', { static: false })
   PopupAlertepltable!: ElementRef;
 
@@ -88,7 +88,7 @@ export class SentAlertComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetRestaurantName(`Sent Alerts`);
+    this.authService.SetRestaurantName(`Users List`);
     this.GetSentList(1);
     this.Permission = this.authService.getPermission();
     this.RoleAssign = JSON.parse(this.Permission.access_control_list);
@@ -240,7 +240,7 @@ export class SentAlertComponent implements OnInit {
     this.http.post(`alerts_database/${this.ResendId}/resend_alert/`, formData).subscribe((res: any) => {
       if (res.status === true) {
         if (this.ResendChoice === 'custom') {
-          this.router.navigate([`/create-alerts/send-user/${res.data.alert_id}/${res.data.alert_type}/${res.data.parent_alert}/editUsers`]);
+          this.router.navigate([`/users/send-user/${res.data.alert_id}/${res.data.alert_type}/${res.data.parent_alert}/editUsers`]);
           this.onDismissResend();
           this.loading = false;
           this.authService.setCurrentUser({ token: res.token });

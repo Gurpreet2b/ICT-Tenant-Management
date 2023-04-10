@@ -35,7 +35,7 @@ export class AuthGuard implements CanActivate {
         } else if (state.url === "/settings/common"){
             this.router.navigate(['/dashboard']);
             return false;
-        } else if (state.url === "/create-alerts"){
+        } else if (state.url === "/users"){
             this.router.navigate(['/dashboard']);
             return false;
         } else if (state.url === "/create-survey"){

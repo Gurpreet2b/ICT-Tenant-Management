@@ -19,10 +19,6 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     // let UserName = this.authService.getUserName();
-    this.Permission = this.authService.getPermission();
-    this.RoleAssign = JSON.parse(this.Permission.access_control_list);
-    this.RoleName = this.Permission.role;
-    // console.log(this.RoleAssign)
     $(document).ready(function () {
       $('#sidebarCollapse').on('click', function () {
         $('#sidebar').toggleClass('active');

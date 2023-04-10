@@ -24,15 +24,6 @@ export class SigninComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.http.get('login/', null).subscribe((res: any) => {
-    // });
-    this.GetInfoWork();
-  }
-  GetInfoWork() {
-    this.http.get(`info/`, null).subscribe((res: any) => {
-      this.authService.setShowWarning(res.show_popup);
-      this.authService.setUserLimitCrossed(res.user_limit_crossed);
-    });
   }
 
   onSubmit() {
@@ -52,23 +43,21 @@ export class SigninComponent implements OnInit {
       this.loading = false;
       if(res.status === true){
         this.loading = false;
-        let UserName = res.user.username;
-        let StartPage = '/' + res.user.start_page;
-        this.authService.setUserName(UserName);
-        this.authService.setShowInfo(res.show_info);
         this.authService.setCurrentUser({ token: res.token });
-        localStorage.setItem("setLanguage", JSON.stringify('en'));
-        if (res.user.start_page) {
-          this.router.navigate([StartPage]);
-        } else {
-          this.router.navigate(['/dashboard']);
-        }
-        this.Permission = res.policy;
-        localStorage.setItem(btoa("Permission"), btoa(JSON.stringify(this.Permission)));
-        localStorage.setItem(btoa("SkinIdList"), btoa(JSON.stringify(res.skin_id_lists)));
-        setInterval(() => {
-          window.location.reload(); 
-          }, 500);
+        this.router.navigate(['/dashboard']);
+        let UserName = res.username;
+        this.authService.setUserName(UserName);
+        // localStorage.setItem("setLanguage", JSON.stringify('en'));
+        // if (res.user.start_page) {
+        //   this.router.navigate([StartPage]);
+        // } else {
+        // }
+        // this.Permission = res.policy;
+        // localStorage.setItem(btoa("Permission"), btoa(JSON.stringify(this.Permission)));
+        // localStorage.setItem(btoa("SkinIdList"), btoa(JSON.stringify(res.skin_id_lists)));
+        // setInterval(() => {
+        //   window.location.reload(); 
+        //   }, 500);
       } else {
         this.loading = false;
         this.toastr.warning(res.message);
@@ -79,20 +68,5 @@ export class SigninComponent implements OnInit {
       this.loading = false;
     });
   }
-
-  // onSubmit() {
-
-  //   this.form.markAllAsTouched(); 
-
-  //   if (!this.form.valid) {
-  //     return;
-  //   }
-
-
-  //   this.http.post('auth/', this.form.value).subscribe((res: any) => {
-  //     this.authService.setCurrentUser({ token: res.access });
-  //     this.router.navigate(['/dashboard']);
-  //   });
-  // }
 
 }

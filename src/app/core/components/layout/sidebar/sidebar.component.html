@@ -11,21 +11,21 @@
                 <a class="has-arrow" data-bs-toggle="collapse" href="#ui-alerts" aria-expanded="false"
                     aria-controls="ui-basic">
                     <i class='fas fa-exclamation-circle icon_alert'></i>
-                    <span class="alert_space">Alert</span>
+                    <span class="alert_space">Users</span>
                 </a>
                 <div class="collapse" id="ui-alerts">
                     <ul class="nav_content">
-                        <li><a routerLink="/create-alerts"
-                            [ngClass]="{'active': authService.TitleName === 'Create Alert'}"><i
-                                    class='fas fa-caret-right image'></i>Alert
+                        <li><a routerLink="/users" routerLinkActive="active"
+                            [ngClass]="{'active': authService.TitleName === 'Create User'}"><i
+                                    class='fas fa-caret-right image'></i>Create User
                             </a>
                         </li>
-                        <li><a routerLink="/create-alerts/sent" routerLinkActive="active"><i
-                                    class='fas fa-caret-right image'></i>Sent List</a></li>
+                        <li><a routerLink="/users/sent" routerLinkActive="active"
+                            [ngClass]="{'active': authService.TitleName === 'Users List'}"><i
+                                    class='fas fa-caret-right image'></i>User List</a></li>
                     </ul>
                 </div>
             </li>
-
             
             <li>
                 <a routerLink="/approval" routerLinkActive="active">

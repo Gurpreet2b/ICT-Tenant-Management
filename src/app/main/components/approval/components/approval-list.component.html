@@ -102,15 +102,15 @@
                                             </span>
                                             <span class="mr-2 cursor" *ngIf="RoleAssign[10].edit">
                                                 <span *ngIf="approval.alert_type === 'PopupAlert'" title="Alert"
-                                                    [routerLink]="['/create-alerts', approval.id, approval.alert_type, 'Alert', 'Edit']">
+                                                    [routerLink]="['/users', approval.id, approval.alert_type, 'Alert', 'Edit']">
                                                     <img src="assets/img/sent-alert-action/duplicate.png" alt="">
                                                 </span>
                                                 <span *ngIf="approval.alert_type === 'TickerAlert'" title="Ticker"
-                                                    [routerLink]="['/create-alerts', approval.id, approval.alert_type, 'Alert', 'Edit']">
+                                                    [routerLink]="['/users', approval.id, approval.alert_type, 'Alert', 'Edit']">
                                                     <img src="assets/img/sent-alert-action/duplicate.png" alt="">
                                                 </span>
                                                 <span *ngIf="approval.alert_type === 'RsvpAlert'" title="RSVP"
-                                                    [routerLink]="['/create-alerts', approval.id, approval.alert_type, 'Alert', 'Edit']">
+                                                    [routerLink]="['/users', approval.id, approval.alert_type, 'Alert', 'Edit']">
                                                     <img src="assets/img/sent-alert-action/duplicate.png" alt="">
                                                 </span>
                                                 <span *ngIf="approval.alert_type === 'WallpaperAlert'"
