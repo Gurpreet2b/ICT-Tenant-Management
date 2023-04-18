@@ -12,7 +12,7 @@ export class FreeTrailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetRestaurantName(`Subscription`);
+    this.authService.SetTopTitleName(`Subscription`);
   }
 
  

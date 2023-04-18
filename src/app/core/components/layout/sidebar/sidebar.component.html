@@ -11,18 +11,25 @@
                 <a class="has-arrow" data-bs-toggle="collapse" href="#ui-alerts" aria-expanded="false"
                     aria-controls="ui-basic">
                     <i class='fas fa-exclamation-circle icon_alert'></i>
-                    <span class="alert_space">Users</span>
+                    <span class="alert_space">Client</span>
                 </a>
                 <div class="collapse" id="ui-alerts">
                     <ul class="nav_content">
-                        <li><a routerLink="/users" routerLinkActive="active"
-                            [ngClass]="{'active': authService.TitleName === 'Create User'}"><i
-                                    class='fas fa-caret-right image'></i>Create User
+                        <li><a routerLink="/client"
+                            [ngClass]="{'active': authService.TitleName === 'Create Client'}"><i
+                                    class='fas fa-caret-right image'></i>Create Client
                             </a>
                         </li>
-                        <li><a routerLink="/users/sent" routerLinkActive="active"
-                            [ngClass]="{'active': authService.TitleName === 'Users List'}"><i
-                                    class='fas fa-caret-right image'></i>User List</a></li>
+                        <li><a routerLink="/client/list"
+                            [ngClass]="{'active': authService.TitleName === 'Client List'}"><i
+                                class='fas fa-caret-right image'></i>Client List
+                            </a>
+                        </li>
+                        <li><a routerLink="/client/update-licence"
+                            [ngClass]="{'active': authService.TitleName === 'Update Licence'}"><i
+                                class='fas fa-caret-right image'></i>Update Licence
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -30,7 +37,7 @@
             <li>
                 <a routerLink="/approval" routerLinkActive="active">
                     <i class='fas fa-file-signature icon_reports'></i>
-                    <span class="approval_space">Approval</span>
+                    <span class="approval_space">Client Approval</span>
                 </a>
             </li>
 

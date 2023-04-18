@@ -44,7 +44,19 @@
                                             Phone Number
                                         </th>
                                         <th>
+                                            License Validity
+                                        </th>
+                                        <th>
                                             Tenent Id
+                                        </th>
+                                        <th>
+                                            Created Date
+                                        </th>
+                                        <th>
+                                            Updated Date
+                                        </th>
+                                        <th>
+                                            Action
                                         </th>
                                     </tr>
                                 <tbody>
@@ -63,9 +75,24 @@
                                             {{user.phone}}
                                         </td>
                                         <td>
+                                            {{dateformat(user.license_validity)}}
+                                        </td>
+                                        <td>
                                             {{user.tenent_id}}
                                         </td>
-                                        
+                                        <td>
+                                            {{dateformat(user.created_date)}}
+                                        </td>
+                                        <td>
+                                            {{dateformat(user.updated_date)}}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success"
+                                            data-bs-toggle="modal" data-bs-target="#LicenceModal">
+                                                Create Licence
+                                            </button>
+                                            
+                                        </td>
                                     </tr>
                                     <tr *ngIf="UserList.length === 0">
                                         No Record Found
@@ -89,6 +116,22 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="LicenceModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> Licence </h4>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <app-update-licence></app-update-licence>
             </div>
         </div>
     </div>

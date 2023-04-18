@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetRestaurantName(`DASHBOARD`);
+    this.authService.SetTopTitleName(`DASHBOARD`);
     
   }
 

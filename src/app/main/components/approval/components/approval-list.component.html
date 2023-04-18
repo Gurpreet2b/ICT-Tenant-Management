@@ -31,16 +31,28 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>
-                                            Type
+                                            New License
                                         </th>
                                         <th>
-                                            Title
+                                            Old License
                                         </th>
                                         <th>
-                                            Sender
+                                            Created By
                                         </th>
                                         <th>
-                                            Date
+                                            Created Date
+                                        </th>
+                                        <th>
+                                            Approved Status
+                                        </th>
+                                        <th>
+                                            Invoice
+                                        </th>
+                                        <th>
+                                            Payment Proof
+                                        </th>
+                                        <th>
+                                            Payment Reciept
                                         </th>
                                         <th>
                                             Action
@@ -51,98 +63,48 @@
                                     <tr
                                         *ngFor="let approval of ApprovalList  | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
                                         <td>
-                                            <span *ngIf="approval.alert_type === 'PopupAlert'" title="Alert">
-                                                <img src="assets/img/sent-alert-action/alert.png" alt="">
-                                            </span>
-                                            <span *ngIf="approval.alert_type === 'TickerAlert'" title="Ticker">
-                                                <img src="assets/img/sent-alert-action/ticker.png" alt="">
-                                            </span>
-                                            <span *ngIf="approval.alert_type === 'RsvpAlert'" title="RSVP">
-                                                <img src="assets/img/sent-alert-action/rsvp.png" alt="">
-                                            </span>
-                                            <span *ngIf="approval.alert_type === 'SurveyAlert'"
-                                                title="Survey Alert">
-                                                <img src="assets/img/sent-alert-action/survey (1).png" alt="">
-                                            </span>
-                                            <span *ngIf="approval.alert_type === 'WallpaperAlert'"
-                                                title="Wallpaper Alert">
-                                                <img src="assets/img/sent-alert-action/wallpaper.png" alt="">
-                                            </span>
-                                            <span *ngIf="approval.alert_type === 'LockscreenAlert'"
-                                                title="Lockscreen Alert">
-                                                <img src="assets/img/sent-alert-action/fullscreen.png" alt="">
-                                            </span>
-                                            <span *ngIf="approval.alert_type === 'ScreensaverAlert'"
-                                                title="Screensaver Alert">
-                                                <img src="assets/img/sent-alert-action/fullscreen.png" alt="">
-                                            </span>
+                                           {{dateformat(approval.new_license_validity)}}
                                         </td>
                                         <td>
-                                            {{approval.name}}
+                                            {{dateformat(approval.old_license_validity)}}
                                         </td>
-                                        <td>{{approval.sent_by}}</td>
-                                        <td>{{dateformat(approval.created_date)}}, {{Timeformat(approval.created_date)}}
+                                        <td>{{approval.created_by}}</td>
+
+                                        <td>{{dateformat(approval.created_date)}} </td>
+
+                                        <td>{{approval.approved_status}} </td>
+
+                                        <td>
+                                            <a href="{{approval.invoice}}" target="_blank" title="Invoice File">
+                                                <i class='fas fa-receipt' style='font-size:20px; color: #00838fe0;'></i>    
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{approval.payment_proof}}" target="_blank" title="Invoice File">
+                                                <i class='fas fa-credit-card' style='font-size:20px; color: #00838fe0;'></i>    
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{approval.payment_reciept}}" target="_blank" title="Invoice File">
+                                                <i class='fas fa-receipt' style='font-size:20px; color: #00838fe0;'></i>    
+                                            </a>
+                                        </td>
+
                                         <td class="marg">
                                             <span class="mr-2 cursor" title="Approval"
-                                                (click)="IsApprovalAlert(approval.id, approval.alert_type)">
+                                                (click)="IsApprovalAlert(approval.id)">
                                                 <img src="assets/img/sent-alert-action/approve.png" alt="">
                                             </span>
                                             <span class="mr-2 cursor" data-bs-toggle="modal" data-bs-target="#RejectedModal"
                                                 title="Rejected" 
-                                                (click)="IsRejectedAlert(approval.id, approval.alert_type)">
+                                                (click)="IsRejectedAlert(approval.id)">
                                                 <img src="assets/img/sent-alert-action/reject.png" alt="">
                                             </span>
-                                            <span class="mr-2 cursor" data-bs-toggle="modal" data-bs-target="#AlertDetailsModal" (click)="IsAlertDetails(approval.id)" 
-                                            *ngIf="approval.alert_type === 'PopupAlert' || approval.alert_type === 'TickerAlert' || approval.alert_type === 'RsvpAlert'">
-                                                <img src="assets/img/sent-alert-action/list.png" alt="">
-                                            </span>
-                                            <span class="mr-2 cursor" data-bs-toggle="modal" data-bs-target="#AlertRecipientsModal" 
-                                            (click)="IsAlertRecipient(approval)">
-                                                <img src="assets/img/sent-alert-action/recipients.png" alt="">
-                                            </span>
-                                            <span class="mr-2 cursor" *ngIf="RoleAssign[10].edit">
-                                                <span *ngIf="approval.alert_type === 'PopupAlert'" title="Alert"
-                                                    [routerLink]="['/users', approval.id, approval.alert_type, 'Alert', 'Edit']">
-                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt="">
-                                                </span>
-                                                <span *ngIf="approval.alert_type === 'TickerAlert'" title="Ticker"
-                                                    [routerLink]="['/users', approval.id, approval.alert_type, 'Alert', 'Edit']">
-                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt="">
-                                                </span>
-                                                <span *ngIf="approval.alert_type === 'RsvpAlert'" title="RSVP"
-                                                    [routerLink]="['/users', approval.id, approval.alert_type, 'Alert', 'Edit']">
-                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt="">
-                                                </span>
-                                                <span *ngIf="approval.alert_type === 'WallpaperAlert'"
-                                                    title="Wallpaper Alert">
-                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt=""
-                                                        [routerLink]="['/wallpaper', approval.id, 'WallpaperAlert', 'Alert', 'Edit']">
-                                                </span>
-                                                <span *ngIf="approval.alert_type === 'LockscreenAlert'"
-                                                    title="LockScreen Alert">
-                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt=""
-                                                        [routerLink]="['/lockscreen', approval.id, 'LockscreenAlert', 'Alert', 'Edit']">
-                                                </span>
-                                                <span *ngIf="approval.alert_type === 'ScreensaverAlert'"
-                                                    title="Screensaver Alert">
-                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt=""
-                                                        [routerLink]="['/screensaver', approval.id, approval.content_type, 'Alert', 'Edit']">
-                                                </span>
-                                                <span *ngIf="approval.alert_type === 'SurveyAlert'"
-                                                    title="Survey Alert">
-                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt=""
-                                                    [routerLink]="['/create-survey', approval.id, 'SurveyAlert', 'Alert', 'Edit']">
-                                                </span>
-                                            </span>
-
-                                            <!-- <span class="mr-2 cursor"
-                                                title="Preview Alert" (click)="GetWallpaperListById(approval)"
-                                                data-bs-toggle="modal" data-bs-target="#PreviewWallpaperModal">
-                                                <img src="assets/img/sent-alert-action/preview.png" alt="">
-                                            </span> -->
-                                            <span class="text-danger cursor" (click)="delete(approval.id)">
+                                            <!-- <span class="text-danger cursor" (click)="delete(approval.id)">
                                                 <i class="far fa-trash-alt"></i>
-                                            </span>
+                                            </span> -->
                                         </td>
 
                                     </tr>
@@ -166,6 +128,40 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="RejectedModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> Rejection Message</h4>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form [formGroup]="formRejected" (ngSubmit)="OnRejectSubmit()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label> Reason Of Rejection </label>
+                            <div class="form-group">
+                                <textarea class="form-control" name="" id="" rows="5" formControlName="message"
+                                [ngClass]="{'error': submitted && myRejectedForm.message.errors}"></textarea>
+                                <div class="invalid-feedback"
+                                    *ngIf="submitted && myRejectedForm.message.errors?.required">
+                                    <sup>*</sup> Enter Rejection Message
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"> Cancel </button>
+                        <button type="submit" class="btn btn-success"> Save </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

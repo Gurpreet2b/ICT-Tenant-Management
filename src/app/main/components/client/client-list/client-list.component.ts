@@ -5,16 +5,13 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpService, AuthService } from 'src/app/core/services';
-import * as xlsx from 'xlsx';
-const Excel_Extension = '.xlsx';
-import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css'],
+  selector: 'app-client-list',
+  templateUrl: './client-list.component.html',
+  styleUrls: ['./client-list.component.css'],
 })
-export class UserListComponent implements OnInit {
+export class ClientListComponent implements OnInit {
   public loading = false;
   public loadingGraph = false;
   public UserList: any = [];
@@ -27,7 +24,7 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetTopTitleName(`Users List`);
+    this.authService.SetTopTitleName(`Client List`);
     this.GetUsersList(1);
   }
 

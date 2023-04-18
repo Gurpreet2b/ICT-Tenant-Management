@@ -1,5 +1,7 @@
 import { DatePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 
 
 @Injectable({
@@ -12,7 +14,8 @@ export class AuthService {
     TitleName: any;
     public currentLanguage: any;
 
-    constructor(private datePipe: DatePipe) { 
+    constructor(private datePipe: DatePipe,
+        private toastr: ToastrService, private router: Router) {
         this.currentLanguage = JSON.parse(localStorage.getItem('setLanguage'));
     }
 
@@ -74,7 +77,7 @@ export class AuthService {
         localStorage.setItem(this.userKey, JSON.stringify(userData));
     }
 
-    SetRestaurantName(value?: any) {
+    SetTopTitleName(value?: any) {
         this.TitleName = value;
         return;
     }
@@ -91,7 +94,7 @@ export class AuthService {
         return token;
     }
 
-    
+
     setUserLimitCrossed(UserLimit: any) {
         localStorage.setItem(btoa("UserLimit"), btoa(UserLimit));
     }
@@ -150,6 +153,35 @@ export class AuthService {
         un = un === null ? un : atob(un);
         let ts = un ? JSON.parse(un) : []
         return ts;
+    }
+
+    GetErrorCode(error: any) {
+        if (error.error.code === 'token_not_valid') {
+            this.logout();
+            this.router.navigate(['/signin']);
+        } else if (error.status === 400) {
+            this.toastr.error("Server Bad Request");
+        } else if (error.status === 402) {
+            this.toastr.error("Payment Required");
+        } else if (error.status === 403) {
+            this.toastr.error("Forbidden Error");
+        } else if (error.status === 404) {
+            this.toastr.error("Page not Found");
+        } else if (error.status === 408) {
+            this.toastr.error("Request Timeout");
+        } else if (error.status === 413) {
+            this.toastr.error("Data Limit Exceeded");
+        } else if (error.status === 429) {
+            this.toastr.error("Too  Many Request");
+        } else if (error.status === 431) {
+            this.toastr.error("Request Header Fields Too large");
+        }  else if (error.status === 500) {
+            this.toastr.error("Internal Server Error");
+        } else if (error.status === 504) {
+            this.toastr.error("Server Gateway Timeout");
+        } else {
+            this.toastr.error("Unknown Error Occurred");
+        }
     }
 
 

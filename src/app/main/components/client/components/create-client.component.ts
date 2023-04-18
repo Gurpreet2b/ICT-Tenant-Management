@@ -6,11 +6,11 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpService, AuthService } from 'src/app/core/services';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css'],
+  selector: 'app-create-client',
+  templateUrl: './create-client.component.html',
+  styleUrls: ['./create-client.component.css'],
 })
-export class CreateUserComponent implements OnInit {
+export class CreateClientComponent implements OnInit {
 
   public loading = false;
   public submitted = false;
@@ -27,7 +27,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetTopTitleName(`Create User`);
+    this.authService.SetTopTitleName(`Create Client`);
     this.AlertId = this.activeRoute.snapshot.params['id'] || 0;
     this.AlertType = this.activeRoute.snapshot.params['type'] || '';
     this.AlertEdit = this.activeRoute.snapshot.params['edit'] || '';

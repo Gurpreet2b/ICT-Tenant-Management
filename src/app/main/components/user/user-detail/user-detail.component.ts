@@ -19,7 +19,7 @@ export class UserDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetRestaurantName(`Users List`);
+    this.authService.SetTopTitleName(`Users List`);
   }
 
 }
