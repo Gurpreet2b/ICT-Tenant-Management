@@ -8,9 +8,10 @@ import { ClientListComponent } from './client-list/client-list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { UpdateLicenceComponent } from './licence/update-licence.component';
+import { LicenceListComponent } from './licence-list/licence-list.component';
 
 @NgModule({
-  declarations: [CreateClientComponent, ClientListComponent, UpdateLicenceComponent],
+  declarations: [CreateClientComponent, ClientListComponent, UpdateLicenceComponent, LicenceListComponent],
   imports: [
     CommonModule,
     ClientRoutingModule,

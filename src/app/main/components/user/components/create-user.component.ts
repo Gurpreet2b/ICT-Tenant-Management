@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,10 +14,10 @@ export class CreateUserComponent implements OnInit {
 
   public loading = false;
   public submitted = false;
-  public AlertId: any;
-  public AlertType: any;
-  public AlertEdit: any;
-  public TenantList: any = []
+  public IsAdmin: any = false;
+  
+  @Output() valueChange = new EventEmitter();
+  @Input() userId: any = '';
 
   constructor(private http: HttpService,
     public toastr: ToastrService, private router: Router,
@@ -28,51 +28,24 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.SetTopTitleName(`Create User`);
-    this.AlertId = this.activeRoute.snapshot.params['id'] || 0;
-    this.AlertType = this.activeRoute.snapshot.params['type'] || '';
-    this.AlertEdit = this.activeRoute.snapshot.params['edit'] || '';
-    this.GetTenantId();
   }
 
-  GetTenantId() {
-    this.loading = true;
-    this.http.get(`tenant_ids/`).subscribe(async (res: any) => {
-      if (res.status === true) {
-        this.loading = false;
-        this.TenantList = res.data;
-      } else {
-        this.toastr.error(res.message);
-        this.loading = false;
-      }
-    }, error => {
-      this.loading = false;
-      if (error.error.code === 'token_not_valid') {
-        this.authService.logout();
-        this.router.navigate(['/signin']);
-        this.loading = false;
-        
-      } else if(error.status === 400) {
-        this.toastr.error("Server Bad Request");
-      } else if(error.status === 403) {
-        this.toastr.error("Forbidden Error");
-      } else if(error.status === 404) {
-        this.toastr.error("Server not Found");
-      } else if(error.status === 500) {
-        this.toastr.error("Internal Server Error");
-      } else {
-        this.toastr.error("Server not reachable");
-        this.loading = false;
-      }
-    });
+  ngOnChanges() {
+    if (this.userId) {
+      console.log('####', this.userId);
+      // this.GetDeviceListById();
+    } else {
+      // this.deviceForm.reset();
+    }
+  }
+
+  IsAdminChange(event: any){
+    this.IsAdmin = event.target.checked;
   }
 
   userForm = this.fb.group({
-    first_name: ['', Validators.required],
-    last_name: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    organization_name: ['', Validators.required],
-    phone: ['', Validators.required],
-    tenent_id: ['', Validators.required],
+    username: ['', Validators.required],
+    password: ['', Validators.required],
   })
 
   // Getter method to access formcontrols
@@ -88,7 +61,8 @@ export class CreateUserComponent implements OnInit {
     }
     const dataToSubmit = { ...this.userForm.value };
     const formData = new FormData();
-    // formData.append('html', this.ScriptHTML);
+
+    formData.append('is_admin', this.IsAdmin);
    
     Object.keys(dataToSubmit).forEach(key => {
       if (!formData.has(key)) {
@@ -97,13 +71,11 @@ export class CreateUserComponent implements OnInit {
     });
 
     this.loading = true;
-    if (this.AlertEdit === '') {
-      this.http.post('client/', formData).subscribe((res: any) => {
+    if (this.userId === '' || this.userId === undefined) {
+      this.http.post('dasboard_users/', formData).subscribe((res: any) => {
         if (res.status === true) {
           this.toastr.success(res.message);
-          this.router.navigate([`/users/sent`]);
-        
-          this.userForm.reset();
+          this.valueChange.emit('User');
           this.loading = false;
           this.authService.setCurrentUser({ token: res.token });
         } else {
@@ -112,32 +84,15 @@ export class CreateUserComponent implements OnInit {
         }
       }, error => {
         this.loading = false;
-        if (error.error.code === 'token_not_valid') {
-          this.authService.logout();
-          this.router.navigate(['/signin']);
-          this.loading = false;
-          
-        } else if(error.status === 400) {
-          this.toastr.error("Server Bad Request");
-        } else if(error.status === 403) {
-          this.toastr.error("Forbidden Error");
-        } else if(error.status === 404) {
-          this.toastr.error("Server not Found");
-        } else if(error.status === 500) {
-          this.toastr.error("Internal Server Error");
-        } else {
-          this.toastr.error("Server not reachable");
-          this.loading = false;
-        }
+        this.authService.GetErrorCode(error);
       });
     } else {
-      this.http.patch(`client/${this.AlertId}/`, formData).subscribe((res: any) => {
+      this.http.patch(`dasboard_users/${this.userId}/`, formData).subscribe((res: any) => {
         if (res.status === true) {
           this.loading = false;
           const responseData = res.data;
-          this.toastr.success("Users Updated Successfully !!");
-          this.router.navigate([`/users/send-user/${responseData.id}/${responseData.alert_type}`]);
-          this.userForm.reset();
+          this.toastr.success(res.message);
+          this.valueChange.emit('User');
           this.authService.setCurrentUser({ token: res.token });
         } else {
           this.toastr.error(res.message);
@@ -145,68 +100,31 @@ export class CreateUserComponent implements OnInit {
         }
       }, error => {
         this.loading = false;
-        if (error.error.code === 'token_not_valid') {
-          this.authService.logout();
-          this.router.navigate(['/signin']);
-          this.loading = false;
-          
-        } else if(error.status === 400) {
-          this.toastr.error("Server Bad Request");
-        } else if(error.status === 403) {
-          this.toastr.error("Forbidden Error");
-        } else if(error.status === 404) {
-          this.toastr.error("Server not Found");
-        } else if(error.status === 500) {
-          this.toastr.error("Internal Server Error");
-        } else {
-          this.toastr.error("Server not reachable");
-          this.loading = false;
-        }
+        this.authService.GetErrorCode(error);
       });
     }
 
   }
 
   // Pop Alert Get By ID 
-  IsPopupAlertByIdRes: any = false;
   GetPopupAlertById() {
     this.loading = true;
-    this.http.get(`alerts_database/${this.AlertId}/`).subscribe(async (res: any) => {
-      this.IsPopupAlertByIdRes = res.status;
+    this.http.get(`dasboard_users/${this.userId}/`).subscribe(async (res: any) => {
       if (res.status === true) {
         this.loading = false;
         this.userForm.setValue({
-          title: res.data.popup_alert.title,
-          body: res.data.popup_alert.body,
-          high_priority: res.data.popup_alert.high_priority,
-          acknowledgement_required: res.data.popup_alert.acknowledgement_required,
-          self_distructive: res.data.popup_alert.self_distructive,
-          auto_close: res.data.popup_alert.auto_close,
-          auto_close_time: res.data.popup_alert.auto_close_time,
-          allow_manual_close: res.data.popup_alert.allow_manual_close,
-          lifetime_given: res.data.popup_alert.lifetime_given,
-        
+          username: res.data.username,
+          password: res.data.password,
         });
+        this.authService.setCurrentUser({ token: res.token });
+      } else {
+        this.toastr.error(res.message);
+        this.loading = false;
+        this.authService.setCurrentUser({ token: res.token });
       }
     }, error => {
       this.loading = false;
-      if (error.error.code === 'token_not_valid') {
-        this.authService.logout();
-        this.router.navigate(['/signin']);
-        this.loading = false;
-        
-      } else if(error.status === 400) {
-        this.toastr.error("Server Bad Request");
-      } else if(error.status === 403) {
-        this.toastr.error("Forbidden Error");
-      } else if(error.status === 404) {
-        this.toastr.error("Server not Found");
-      } else if(error.status === 500) {
-        this.toastr.error("Internal Server Error");
-      } else {
-        this.toastr.error("Server not reachable");
-        this.loading = false;
-      }
+      this.authService.GetErrorCode(error);
     });
   }
 }

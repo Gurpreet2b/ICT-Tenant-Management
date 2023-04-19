@@ -46,23 +46,7 @@ export class CreateClientComponent implements OnInit {
       }
     }, error => {
       this.loading = false;
-      if (error.error.code === 'token_not_valid') {
-        this.authService.logout();
-        this.router.navigate(['/signin']);
-        this.loading = false;
-        
-      } else if(error.status === 400) {
-        this.toastr.error("Server Bad Request");
-      } else if(error.status === 403) {
-        this.toastr.error("Forbidden Error");
-      } else if(error.status === 404) {
-        this.toastr.error("Server not Found");
-      } else if(error.status === 500) {
-        this.toastr.error("Internal Server Error");
-      } else {
-        this.toastr.error("Server not reachable");
-        this.loading = false;
-      }
+      this.authService.GetErrorCode(error);
     });
   }
 
@@ -97,11 +81,10 @@ export class CreateClientComponent implements OnInit {
     });
 
     this.loading = true;
-    if (this.AlertEdit === '') {
       this.http.post('client/', formData).subscribe((res: any) => {
         if (res.status === true) {
           this.toastr.success(res.message);
-          this.router.navigate([`/users/sent`]);
+          this.router.navigate([`/client/list`]);
         
           this.userForm.reset();
           this.loading = false;
@@ -112,58 +95,8 @@ export class CreateClientComponent implements OnInit {
         }
       }, error => {
         this.loading = false;
-        if (error.error.code === 'token_not_valid') {
-          this.authService.logout();
-          this.router.navigate(['/signin']);
-          this.loading = false;
-          
-        } else if(error.status === 400) {
-          this.toastr.error("Server Bad Request");
-        } else if(error.status === 403) {
-          this.toastr.error("Forbidden Error");
-        } else if(error.status === 404) {
-          this.toastr.error("Server not Found");
-        } else if(error.status === 500) {
-          this.toastr.error("Internal Server Error");
-        } else {
-          this.toastr.error("Server not reachable");
-          this.loading = false;
-        }
+        this.authService.GetErrorCode(error);
       });
-    } else {
-      this.http.patch(`client/${this.AlertId}/`, formData).subscribe((res: any) => {
-        if (res.status === true) {
-          this.loading = false;
-          const responseData = res.data;
-          this.toastr.success("Users Updated Successfully !!");
-          this.router.navigate([`/users/send-user/${responseData.id}/${responseData.alert_type}`]);
-          this.userForm.reset();
-          this.authService.setCurrentUser({ token: res.token });
-        } else {
-          this.toastr.error(res.message);
-          this.loading = false;
-        }
-      }, error => {
-        this.loading = false;
-        if (error.error.code === 'token_not_valid') {
-          this.authService.logout();
-          this.router.navigate(['/signin']);
-          this.loading = false;
-          
-        } else if(error.status === 400) {
-          this.toastr.error("Server Bad Request");
-        } else if(error.status === 403) {
-          this.toastr.error("Forbidden Error");
-        } else if(error.status === 404) {
-          this.toastr.error("Server not Found");
-        } else if(error.status === 500) {
-          this.toastr.error("Internal Server Error");
-        } else {
-          this.toastr.error("Server not reachable");
-          this.loading = false;
-        }
-      });
-    }
 
   }
 
@@ -190,23 +123,7 @@ export class CreateClientComponent implements OnInit {
       }
     }, error => {
       this.loading = false;
-      if (error.error.code === 'token_not_valid') {
-        this.authService.logout();
-        this.router.navigate(['/signin']);
-        this.loading = false;
-        
-      } else if(error.status === 400) {
-        this.toastr.error("Server Bad Request");
-      } else if(error.status === 403) {
-        this.toastr.error("Forbidden Error");
-      } else if(error.status === 404) {
-        this.toastr.error("Server not Found");
-      } else if(error.status === 500) {
-        this.toastr.error("Internal Server Error");
-      } else {
-        this.toastr.error("Server not reachable");
-        this.loading = false;
-      }
+      this.authService.GetErrorCode(error);
     });
   }
 }

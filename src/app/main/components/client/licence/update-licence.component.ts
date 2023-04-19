@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +11,10 @@ import { HttpService, AuthService } from 'src/app/core/services';
   styleUrls: ['./update-licence.component.css'],
 })
 export class UpdateLicenceComponent implements OnInit {
+
+  @Output() valueChange = new EventEmitter();
+  @Input() clientId: any;
+  public IsPaidVersion: any = false;
 
   public loading = false;
   public submitted = false;
@@ -30,8 +34,25 @@ export class UpdateLicenceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetTopTitleName(`Update Licence`);
+    // this.authService.SetTopTitleName(`Update Licence`);
     this.GetClientList();
+  }
+
+  ngOnChanges() {
+    if (this.clientId) {
+      console.log('####', this.clientId);
+      // this.GetDeviceListById();
+    } else {
+      // this.deviceForm.reset();
+    }
+  }
+
+  OnPaidVersion(event: any) {
+    if (event.target.value === 'paid') {
+      this.IsPaidVersion = true;
+    } else {
+      this.IsPaidVersion = false;
+    }
   }
 
   GetClientList() {
@@ -82,7 +103,7 @@ export class UpdateLicenceComponent implements OnInit {
 
   licenceUpdateForm = this.fb.group({
     new_license_date: ['', Validators.required],
-    client_id: ['', Validators.required]
+    license_type: ['', Validators.required]
   })
 
   // Getter method to access formcontrols
@@ -98,6 +119,7 @@ export class UpdateLicenceComponent implements OnInit {
     }
     const dataToSubmit = { ...this.licenceUpdateForm.value };
     const formData = new FormData();
+    formData.append('client_id', this.clientId);
     formData.append('invoice', this.InvoiceFile);
     formData.append('payment_reciept', this.PaymentRecieptFile);
     formData.append('payment_proof', this.PaymentProofFile);
@@ -113,6 +135,7 @@ export class UpdateLicenceComponent implements OnInit {
       if (res.status === true) {
         this.toastr.success(res.message);
         // this.router.navigate([`/users/sent`]);
+        this.valueChange.emit('Client');
 
         this.licenceUpdateForm.reset();
         this.loading = false;

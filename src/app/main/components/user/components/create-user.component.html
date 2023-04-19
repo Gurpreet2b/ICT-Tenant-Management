@@ -6,11 +6,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>First Name</label>
-                                <input type="text" placeholder="Enter First Name" class="form-control"
-                                formControlName="first_name" [ngClass]="{'error': submitted && myForm.first_name.errors}">
-                                <div class="invalid-feedback" *ngIf="submitted && myForm.first_name.errors?.required">
-                                    <sup>*</sup>Please Enter First Name
+                                <label>User Name</label>
+                                <input type="text" placeholder="Enter User Name" class="form-control"
+                                formControlName="username" [ngClass]="{'error': submitted && myForm.username.errors}">
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.username.errors?.required">
+                                    <sup>*</sup>Please Enter User Name
                                 </div>
                             </div>
                         </div>
@@ -18,70 +18,25 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>Last Name</label>
-                                <input type="text" placeholder="Enter Last Name" class="form-control"
-                                formControlName="last_name" [ngClass]="{'error': submitted && myForm.last_name.errors}">
-                                <div class="invalid-feedback" *ngIf="submitted && myForm.last_name.errors?.required">
-                                    <sup>*</sup>Please Enter Last Name
+                                <label>Password</label>
+                                <input type="password" placeholder="Enter password" formControlName="password" class="form-control" 
+                                [ngClass]="{'error': submitted && myForm.password.errors}" />
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.password.errors?.required">
+                                    <sup>*</sup>Please Enter password
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>Email</label>
-                                <input type="text" placeholder="Enter Email" formControlName="email" class="form-control" 
-                                [ngClass]="{ 'is-invalid': submitted && myForm.email.errors }" />
-                                <div *ngIf="submitted && myForm.email.errors" class="invalid-feedback">
-                                    <div *ngIf="myForm.email.errors.required">Email is required</div>
-                                    <div *ngIf="myForm.email.errors.email">Email must be a valid email address</div>
-                                </div>
+                                <label>Is Admin</label> <br />
+                                <input type="checkbox" (click)="IsAdminChange($event)" />
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Organization</label>
-                                <input type="text" placeholder="Enter organization" class="form-control"
-                                formControlName="organization_name" [ngClass]="{'error': submitted && myForm.organization_name.errors}">
-                                <div class="invalid-feedback" *ngIf="submitted && myForm.organization_name.errors?.required">
-                                    <sup>*</sup>Please Enter Organization
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Phone Number</label>
-                                <input type="text" placeholder="Enter Phone Number" class="form-control"
-                                formControlName="phone" [ngClass]="{'error': submitted && myForm.phone.errors}">
-                                <div class="invalid-feedback" *ngIf="submitted && myForm.phone.errors?.required">
-                                    <sup>*</sup>Please Enter Phone Number
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Tenent Id</label>
-                                <select class="form-control" formControlName="tenent_id" 
-                                [ngClass]="{'error': submitted && myForm.tenent_id.errors}">
-                                    <option selected value=""> Select Tenent Id </option>
-                                    <option *ngFor="let item of TenantList" [value]="item">
-                                        {{ item }}
-                                    </option>
-                                </select>
-                                <div class="invalid-feedback" *ngIf="submitted && myForm.tenent_id.errors?.required">
-                                    <sup>*</sup>Please Select Tenent Id
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                
+
                     <div>
                         <button type="submit" class="btn btn-success">
                             Save

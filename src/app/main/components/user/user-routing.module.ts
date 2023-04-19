@@ -5,8 +5,8 @@ import { UserDetailComponent } from './user-detail/user-detail.component';
 import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
-  { path: '', component: CreateUserComponent },
-  { path: 'sent', component: UserListComponent },
+  { path: '', component: UserListComponent },
+  { path: 'create', component: CreateUserComponent },
   { path: ':id/:type', component: CreateUserComponent },
   { path: ':id/:type/Alert/:edit', component: CreateUserComponent },
   { path: 'detail', component: UserDetailComponent },

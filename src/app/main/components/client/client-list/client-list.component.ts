@@ -16,6 +16,8 @@ export class ClientListComponent implements OnInit {
   public loadingGraph = false;
   public UserList: any = [];
 
+  public clientId: any;
+
   constructor(private http: HttpService,
     private toastr: ToastrService,
     private activeRoute: ActivatedRoute, private router: Router,
@@ -26,6 +28,16 @@ export class ClientListComponent implements OnInit {
   ngOnInit(): void {
     this.authService.SetTopTitleName(`Client List`);
     this.GetUsersList(1);
+  }
+
+  ValueChanged(type: any) {
+    if (type === 'Client') {
+      this.GetUsersList(1);
+    }
+  }
+
+  IsLicense(user: any) {
+    this.clientId = user.id;
   }
 
   dateformat(datas: string) {

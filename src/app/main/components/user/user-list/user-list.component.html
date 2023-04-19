@@ -17,6 +17,13 @@
                             </div>
                         </form>
                     </div>
+
+                    <div class="col-md-5 text-right">
+                        <button type="submit" class="btn btn-success"
+                        data-bs-toggle="modal" data-bs-target="#CreateUsersModal">
+                            Create User
+                        </button>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -35,37 +42,30 @@
                                             Name
                                         </th>
                                         <th>
-                                            Email
+                                            Created Date
                                         </th>
                                         <th>
-                                            Organization
+                                            Is Admin
                                         </th>
                                         <th>
-                                            Phone Number
-                                        </th>
-                                        <th>
-                                            Tenent Id
+                                            Action
                                         </th>
                                     </tr>
                                 <tbody>
                                     <tr
                                         *ngFor="let user of UserList | paginate: {itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
                                         <td>
-                                            {{user.first_name}} {{user.last_name}}
+                                            {{user.user}}
                                         </td>
                                         <td>
-                                            {{user.email}}
+                                            {{dateformat(user.created_date)}}
                                         </td>
                                         <td>
-                                            {{user.organization_name}}
+                                            {{user.is_admin}}
                                         </td>
                                         <td>
-                                            {{user.phone}}
+                                            <i class="far fa-edit cursor"></i>
                                         </td>
-                                        <td>
-                                            {{user.tenent_id}}
-                                        </td>
-                                        
                                     </tr>
                                     <tr *ngIf="UserList.length === 0">
                                         No Record Found
@@ -89,6 +89,22 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="CreateUsersModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> Create User </h4>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <app-create-user [userId]="userId" (valueChange)='ValueChanged($event)'></app-create-user>
             </div>
         </div>
     </div>

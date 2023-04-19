@@ -5,20 +5,18 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpService, AuthService } from 'src/app/core/services';
-import * as xlsx from 'xlsx';
-const Excel_Extension = '.xlsx';
-import * as $ from 'jquery';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css'],
+  selector: 'app-licence-list',
+  templateUrl: './licence-list.component.html',
+  styleUrls: ['./licence-list.component.css'],
 })
-export class UserListComponent implements OnInit {
+export class LicenceListComponent implements OnInit {
   public loading = false;
   public loadingGraph = false;
   public UserList: any = [];
-  public userId: any;
+
+  public clientId: any;
 
   constructor(private http: HttpService,
     private toastr: ToastrService,
@@ -28,23 +26,18 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetTopTitleName(`Users List`);
+    this.authService.SetTopTitleName(`Licence List`);
     this.GetUsersList(1);
   }
 
   ValueChanged(type: any) {
-    if (type === 'User') {
+    if (type === 'Client') {
       this.GetUsersList(1);
-      this.onDismiss();
     }
   }
 
-  onDismiss() {
-    const target = "#CreateUsersModal";
-    $(target).hide();
-    $('.modal-backdrop').remove();
-    $("body").removeClass("modal-open");
-    $("body").addClass("modal-overflow");
+  IsLicense(user: any) {
+    this.clientId = user.id;
   }
 
   dateformat(datas: string) {
@@ -75,7 +68,7 @@ export class UserListComponent implements OnInit {
 
     let params = new HttpParams();
     params = params.append('page', page.toString())
-    this.http.get(`dasboard_users/`, null, { params: params }).subscribe((res: any) => {
+    this.http.get(`client/`, null, { params: params }).subscribe((res: any) => {
       const responseData = res;
       if (res.status === true) {
         this.UserList = res.data;
