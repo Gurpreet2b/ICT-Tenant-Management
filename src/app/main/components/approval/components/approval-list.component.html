@@ -43,6 +43,9 @@
                                             Created Date
                                         </th>
                                         <th>
+                                            License Type
+                                        </th>
+                                        <th>
                                             Approved Status
                                         </th>
                                         <th>
@@ -71,34 +74,45 @@
                                         <td>{{approval.created_by}}</td>
 
                                         <td>{{dateformat(approval.created_date)}} </td>
-
-                                        <td>{{approval.approved_status}} </td>
+                                        <td>
+                                            {{approval.license_type}}
+                                        </td>
+                                        <td>
+                                            <span *ngIf="approval.approved_status === 'Approved'"
+                                            style="color: green;">
+                                                {{approval.approved_status}} 
+                                            </span> 
+                                            <span *ngIf="approval.approved_status !== 'Approved'">
+                                                {{approval.approved_status}} 
+                                            </span> 
+                                        </td>
 
                                         <td>
                                             <a href="{{approval.invoice}}" target="_blank" title="Invoice File">
-                                                <i class='fas fa-receipt' style='font-size:20px; color: #00838fe0;'></i>    
+                                                <i class='fas fa-receipt' style='font-size:20px; color: #4b4770;'></i>    
                                             </a>
                                         </td>
 
                                         <td>
                                             <a href="{{approval.payment_proof}}" target="_blank" title="Invoice File">
-                                                <i class='fas fa-credit-card' style='font-size:20px; color: #00838fe0;'></i>    
+                                                <i class='fas fa-credit-card' style='font-size:20px; color: #4b4770;'></i>    
                                             </a>
                                         </td>
 
                                         <td>
                                             <a href="{{approval.payment_reciept}}" target="_blank" title="Invoice File">
-                                                <i class='fas fa-receipt' style='font-size:20px; color: #00838fe0;'></i>    
+                                                <i class='fas fa-receipt' style='font-size:20px; color: #4b4770;'></i>    
                                             </a>
                                         </td>
 
                                         <td class="marg">
                                             <span class="mr-2 cursor" title="Approval"
-                                                (click)="IsApprovalAlert(approval.id)">
+                                                (click)="IsApprovalAlert(approval.id)"
+                                                *ngIf="approval.approved_status !== 'Approved'">
                                                 <img src="assets/img/sent-alert-action/approve.png" alt="">
                                             </span>
                                             <span class="mr-2 cursor" data-bs-toggle="modal" data-bs-target="#RejectedModal"
-                                                title="Rejected" 
+                                                title="Rejected" *ngIf="approval.approved_status !== 'Approved'"
                                                 (click)="IsRejectedAlert(approval.id)">
                                                 <img src="assets/img/sent-alert-action/reject.png" alt="">
                                             </span>

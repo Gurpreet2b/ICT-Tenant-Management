@@ -5,6 +5,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HttpService, AuthService } from 'src/app/core/services';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-licence-list',
@@ -14,9 +15,10 @@ import { HttpService, AuthService } from 'src/app/core/services';
 export class LicenceListComponent implements OnInit {
   public loading = false;
   public loadingGraph = false;
-  public UserList: any = [];
-
+  public LicenseList: any = [];
   public clientId: any;
+  public licenseId: any;
+  public PaymentDetails: any;
 
   constructor(private http: HttpService,
     private toastr: ToastrService,
@@ -27,17 +29,28 @@ export class LicenceListComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.SetTopTitleName(`Licence List`);
-    this.GetUsersList(1);
+    this.clientId = this.activeRoute.snapshot.params['id'] || 0;
+    this.GetLicenseList(1);
   }
 
   ValueChanged(type: any) {
     if (type === 'Client') {
-      this.GetUsersList(1);
+      this.GetLicenseList(1);
+      this.onDismiss();
     }
   }
 
-  IsLicense(user: any) {
-    this.clientId = user.id;
+  onDismiss() {
+    const target = "#LicenceModal";
+    $(target).hide();
+    $('.modal-backdrop').remove();
+    $("body").removeClass("modal-open");
+    $("body").addClass("modal-overflow");
+  }
+
+  IsPaymentDetails(data: any) {
+    this.licenseId = data.license_id;
+    this.GetPaymentDetails();
   }
 
   dateformat(datas: string) {
@@ -53,13 +66,13 @@ export class LicenceListComponent implements OnInit {
   });
 
   onSearch(formValue: any) {
-    this.GetUsersList(1);
+    this.GetLicenseList(1);
     this.currentPage = 1;
   }
 
   PageJump: any = 10;
   PageTotalNumber: any = [];
-  GetUsersList(page: number) {
+  GetLicenseList(page: number) {
     this.loading = true;
     const formData = new FormData();
     const formValue = this.form.value;
@@ -68,10 +81,10 @@ export class LicenceListComponent implements OnInit {
 
     let params = new HttpParams();
     params = params.append('page', page.toString())
-    this.http.get(`client/`, null, { params: params }).subscribe((res: any) => {
+    this.http.get(`client/${this.clientId}/client_license_history`, null, { params: params }).subscribe((res: any) => {
       const responseData = res;
       if (res.status === true) {
-        this.UserList = res.data;
+        this.LicenseList = res.data;
         this.totalItems = responseData.count;
         this.loading = false;
         this.authService.setCurrentUser({ token: res.token });
@@ -95,11 +108,27 @@ export class LicenceListComponent implements OnInit {
   onPageChange(event: any, data: any) {
     if (data === '1') {
       this.currentPage = event;
-      this.GetUsersList(event)
+      this.GetLicenseList(event)
     } else {
       this.currentPage = Number(event.target.value);
-      this.GetUsersList(this.currentPage)
+      this.GetLicenseList(this.currentPage)
     }
+  }
+
+  GetPaymentDetails() {
+    this.loading = true;
+    this.http.get(`client/${this.licenseId}/license_payment_details/`).subscribe(async (res: any) => {
+      if (res.status === true) {
+        this.loading = false;
+        this.PaymentDetails = res.data;
+      } else {
+        this.toastr.warning(res.message);
+        this.loading = false;
+      }
+    }, error => {
+      this.loading = false;
+      this.authService.GetErrorCode(error);
+    });
   }
 
   delete(id: number) {
@@ -111,8 +140,8 @@ export class LicenceListComponent implements OnInit {
     this.loading = true;
     this.http.delete(`alerts_database/${id}/`).subscribe((res: any) => {
       if (res.status === true) {
-        this.toastr.success("User Deleted Successfully");
-        this.GetUsersList(this.currentPage)
+        this.toastr.success("License Deleted Successfully");
+        this.GetLicenseList(this.currentPage)
         this.authService.setCurrentUser({ token: res.token });
       } else {
         this.toastr.error(res.message);

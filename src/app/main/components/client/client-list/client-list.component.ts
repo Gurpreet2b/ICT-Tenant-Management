@@ -14,7 +14,7 @@ import { HttpService, AuthService } from 'src/app/core/services';
 export class ClientListComponent implements OnInit {
   public loading = false;
   public loadingGraph = false;
-  public UserList: any = [];
+  public ClientList: any = [];
 
   public clientId: any;
 
@@ -27,14 +27,14 @@ export class ClientListComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.SetTopTitleName(`Client List`);
-    this.GetUsersList(1);
+    this.GetClientList(1);
   }
 
-  ValueChanged(type: any) {
-    if (type === 'Client') {
-      this.GetUsersList(1);
-    }
-  }
+  // ValueChanged(type: any) {
+  //   if (type === 'Client') {
+  //     this.GetClientList(1);
+  //   }
+  // }
 
   IsLicense(user: any) {
     this.clientId = user.id;
@@ -53,13 +53,13 @@ export class ClientListComponent implements OnInit {
   });
 
   onSearch(formValue: any) {
-    this.GetUsersList(1);
+    this.GetClientList(1);
     this.currentPage = 1;
   }
 
   PageJump: any = 10;
   PageTotalNumber: any = [];
-  GetUsersList(page: number) {
+  GetClientList(page: number) {
     this.loading = true;
     const formData = new FormData();
     const formValue = this.form.value;
@@ -71,7 +71,7 @@ export class ClientListComponent implements OnInit {
     this.http.get(`client/`, null, { params: params }).subscribe((res: any) => {
       const responseData = res;
       if (res.status === true) {
-        this.UserList = res.data;
+        this.ClientList = res.data;
         this.totalItems = responseData.count;
         this.loading = false;
         this.authService.setCurrentUser({ token: res.token });
@@ -95,10 +95,10 @@ export class ClientListComponent implements OnInit {
   onPageChange(event: any, data: any) {
     if (data === '1') {
       this.currentPage = event;
-      this.GetUsersList(event)
+      this.GetClientList(event)
     } else {
       this.currentPage = Number(event.target.value);
-      this.GetUsersList(this.currentPage)
+      this.GetClientList(this.currentPage)
     }
   }
 
@@ -112,7 +112,7 @@ export class ClientListComponent implements OnInit {
     this.http.delete(`alerts_database/${id}/`).subscribe((res: any) => {
       if (res.status === true) {
         this.toastr.success("User Deleted Successfully");
-        this.GetUsersList(this.currentPage)
+        this.GetClientList(this.currentPage)
         this.authService.setCurrentUser({ token: res.token });
       } else {
         this.toastr.error(res.message);

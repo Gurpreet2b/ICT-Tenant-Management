@@ -54,7 +54,7 @@ p {
 }
 
 .header-title {
-    color: #676b84;
+    color: #fff;
     font-size: 17px;
     width: 100%;
     padding-top: 10px;
@@ -79,9 +79,9 @@ p {
 }
 
 .table .thead-dark th {
-    color: #676b84;
-    background-color: #f3f6f9;
-    border-color: #f3f6f9;
+    color: #fff !important;
+    background-color: #9175e7;
+    border-color: #9175e7;
 }
 
 .invalid-feedback {
@@ -169,7 +169,7 @@ p {
 }
 
 .modal-header {
-    background-color: #00838f !important;
+    background-color: #9175e7 !important;
 }
 
 .modal-title {
@@ -177,7 +177,7 @@ p {
 }
 
 .bg-white {
-    background-color: #00838f !important
+    background-color: #9175e7 !important
 }
 
 .close {
@@ -243,4 +243,9 @@ p {
 
 .tiny-opacity {
     opacity: 0.9;
+}
+
+.ngx-pagination .current {
+    background: #9175e7 !important;
+    color: #fff !important;
 }

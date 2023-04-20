@@ -29,7 +29,7 @@ export class ApprovalListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.SetTopTitleName(`Client Approval`);
+    this.authService.SetTopTitleName(`License Approval`);
     this.GetApprovalList(1);
   }
 

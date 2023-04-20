@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: '', component: CreateClientComponent },
   { path: 'list', component: ClientListComponent },
   { path: 'update-licence', component: UpdateLicenceComponent },
-  { path: 'licence-list', component: LicenceListComponent },
+  { path: 'licence-list/:id', component: LicenceListComponent },
 ];
 
 @NgModule({

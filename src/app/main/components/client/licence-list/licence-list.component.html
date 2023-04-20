@@ -7,15 +7,20 @@
                         <form [formGroup]="form" (ngSubmit)="onSearch(form.value)">
                             <div class="input-group">
                                 <div class="form-outline">
-                                    <input id="search-input" formControlName="search"
-                                        placeholder="Search" type="search" id="form"
-                                        class="form-control" style="padding: 17.7px; width: 210px;" />
+                                    <input id="search-input" formControlName="search" placeholder="Search" type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
                                 </div>
                                 <button type="submit" class="btn btn-success ml-3">
                                     Search
                                 </button>
                             </div>
                         </form>
+                    </div>
+                    <div class="col-md-5 text-right">
+                        <button type="submit" class="btn btn-success" data-bs-toggle="modal"
+                            data-bs-target="#LicenceModal">
+                            Create Licence
+                        </button>
                     </div>
                 </div>
 
@@ -29,70 +34,60 @@
                             </div>
                             <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
                             <table class="table table-hover">
-                                <thead class="thead-black">
+                                <thead class="thead-dark">
                                     <tr>
                                         <th>
-                                            Name
+                                            License Type
                                         </th>
                                         <th>
-                                            Email
+                                            License Start Date
                                         </th>
                                         <th>
-                                            Organization
-                                        </th>
-                                        <th>
-                                            Phone Number
-                                        </th>
-                                        <!-- <th>
-                                            License Validity
-                                        </th>
-                                        <th>
-                                            Tenent Id
+                                            License End Date
                                         </th>
                                         <th>
                                             Created Date
                                         </th>
                                         <th>
                                             Updated Date
-                                        </th> -->
+                                        </th>
                                         <th>
-                                            Licence
+                                            Created By
+                                        </th>
+                                        <th>
+                                            Action
                                         </th>
                                     </tr>
                                 <tbody>
                                     <tr
-                                        *ngFor="let user of UserList | paginate: {itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        *ngFor="let license of LicenseList | paginate: {itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
                                         <td>
-                                            {{user.first_name}} {{user.last_name}}
+                                            {{license.license_type}}
                                         </td>
                                         <td>
-                                            {{user.email}}
+                                            {{dateformat(license.license_start_date)}}
                                         </td>
                                         <td>
-                                            {{user.organization_name}}
+                                            {{dateformat(license.license_end_date)}}
                                         </td>
                                         <td>
-                                            {{user.phone}}
-                                        </td>
-                                        <!-- <td>
-                                            {{dateformat(user.license_validity)}}
+                                            {{dateformat(license.created_date)}}
                                         </td>
                                         <td>
-                                            {{user.tenent_id}}
+                                            {{dateformat(license.updated_date)}}
                                         </td>
                                         <td>
-                                            {{dateformat(user.created_date)}}
+                                            {{license.created_by}}
                                         </td>
                                         <td>
-                                            {{dateformat(user.updated_date)}}
-                                        </td> -->
-                                        <td>
-                                            <img src="/assets/img/parcha.png" alt="Licence Details"
-                                            data-bs-toggle="modal" data-bs-target="#LicenceModal"
-                                            (click)="IsLicense(user)" width="24" class="cursor">
+                                            <img src="/assets/img/dollar.png" alt="Payment Details"
+                                                title="Payment Details" data-bs-toggle="modal"
+                                                data-bs-target="#PaymentDetailsModal"
+                                                (click)="IsPaymentDetails(license)" width="24" class="cursor"
+                                                *ngIf="license.license_type === 'paid'">
                                         </td>
                                     </tr>
-                                    <tr *ngIf="UserList.length === 0">
+                                    <tr *ngIf="LicenseList.length === 0">
                                         No Record Found
                                     </tr>
                                 </tbody>
@@ -130,6 +125,79 @@
             <!-- Modal body -->
             <div class="modal-body">
                 <app-update-licence [clientId]="clientId" (valueChange)='ValueChanged($event)'></app-update-licence>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="PaymentDetailsModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background-color: #f4f5f7;">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> Payment Details </h4>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12 p-0">
+                        <section style="background-color: #f4f5f7;">
+                            <div class="container">
+                                <div class="row d-flex justify-content-center align-items-center h-100">
+                                    <div class="col col-lg-12 mb-4 mb-lg-0">
+                                        <div class="card" style="border-radius: .5rem;">
+                                            <div class="row g-0">
+                                                <div class="col-md-12">
+                                                    <div class="card-body p-4">
+                                                        <h6>Information</h6>
+                                                        <hr class="mt-0 mb-4">
+                                                        <div class="row pt-1">
+                                                            <div class="col-12 mb-3">
+                                                                <h6>License ID</h6>
+                                                                <p style="color: green;">{{PaymentDetails?.license}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row pt-1">
+                                                            <div class="col-6 mb-3">
+                                                                <h6>License Validity Start</h6>
+                                                                <p style="color: green;">{{PaymentDetails?.old_license_validity}}</p>
+                                                            </div>
+                                                            <div class="col-6 mb-3">
+                                                                <h6>License Validity End</h6>
+                                                                <p style="color: green;">{{PaymentDetails?.new_license_validity}}</p>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <h6>Payment Documents</h6>
+                                                        <hr class="mt-0 mb-4">
+                                                        <div class="row pt-1">
+                                                            <div class="col-4 mb-3">
+                                                                <h6>Invoice</h6>
+                                                                <a href="{{PaymentDetails?.invoice}}" target="_blank"
+                                                                    class="text-view">View</a>
+                                                            </div>
+                                                            <div class="col-4 mb-3">
+                                                                <h6>Payment Proof</h6>
+                                                                <a href="{{PaymentDetails?.payment_proof}}" target="_blank"
+                                                                    class="text-view">View</a>
+                                                            </div>
+                                                            <div class="col-4 mb-3">
+                                                                <h6>Payment Reciept</h6>
+                                                                <a href="{{PaymentDetails?.payment_reciept}}" target="_blank"
+                                                                    class="text-view">View</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

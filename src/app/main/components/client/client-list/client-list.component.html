@@ -29,7 +29,7 @@
                             </div>
                             <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
                             <table class="table table-hover">
-                                <thead class="thead-black">
+                                <thead class="thead-dark">
                                     <tr>
                                         <th>
                                             Name
@@ -61,38 +61,38 @@
                                     </tr>
                                 <tbody>
                                     <tr
-                                        *ngFor="let user of UserList | paginate: {itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        *ngFor="let client of ClientList | paginate: {itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
                                         <td>
-                                            {{user.first_name}} {{user.last_name}}
+                                            {{client.first_name}} {{client.last_name}}
                                         </td>
                                         <td>
-                                            {{user.email}}
+                                            {{client.email}}
                                         </td>
                                         <td>
-                                            {{user.organization_name}}
+                                            {{client.organization_name}}
                                         </td>
                                         <td>
-                                            {{user.phone}}
+                                            {{client.phone}}
                                         </td>
                                         <!-- <td>
-                                            {{dateformat(user.license_validity)}}
+                                            {{dateformat(client.license_validity)}}
                                         </td>
                                         <td>
-                                            {{user.tenent_id}}
+                                            {{client.tenent_id}}
                                         </td>
                                         <td>
-                                            {{dateformat(user.created_date)}}
+                                            {{dateformat(client.created_date)}}
                                         </td>
                                         <td>
-                                            {{dateformat(user.updated_date)}}
+                                            {{dateformat(client.updated_date)}}
                                         </td> -->
                                         <td>
                                             <img src="/assets/img/parcha.png" alt="Licence Details"
-                                            data-bs-toggle="modal" data-bs-target="#LicenceModal"
-                                            (click)="IsLicense(user)" width="24" class="cursor">
+                                             width="24" class="cursor"
+                                            [routerLink]="['/client/licence-list', client.id]">
                                         </td>
                                     </tr>
-                                    <tr *ngIf="UserList.length === 0">
+                                    <tr *ngIf="ClientList.length === 0">
                                         No Record Found
                                     </tr>
                                 </tbody>
@@ -119,18 +119,16 @@
     </div>
 </div>
 
-<div class="modal" id="LicenceModal">
+<!-- <div class="modal" id="LicenceModal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title"> Licence </h4>
                 <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
             </div>
-            <!-- Modal body -->
             <div class="modal-body">
                 <app-update-licence [clientId]="clientId" (valueChange)='ValueChanged($event)'></app-update-licence>
             </div>
         </div>
     </div>
-</div>
+</div> -->
