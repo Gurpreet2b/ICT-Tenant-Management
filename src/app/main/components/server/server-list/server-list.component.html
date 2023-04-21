@@ -1,0 +1,111 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row mb-3">
+                    <div class="col-md-7">
+                        <form [formGroup]="form" (ngSubmit)="onSearch(form.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search"
+                                        placeholder="Search" type="search" id="form"
+                                        class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    Search
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-5 text-right">
+                        <button type="submit" class="btn btn-success"
+                        data-bs-toggle="modal" data-bs-target="#CreateServerModal">
+                            Create Server
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Created Date
+                                        </th>
+                                        <th>
+                                            Is Admin
+                                        </th>
+                                        <th>
+                                            Action
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let server of ServerList | paginate: {itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            {{server.name}}
+                                        </td>
+                                        <td>
+                                            {{dateformat(server.created_date)}}
+                                        </td>
+                                        <td>
+                                            {{server.is_admin}}
+                                        </td>
+                                        <td>
+                                            <i class="far fa-edit cursor"></i>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="ServerList.length === 0">
+                                        No Record Found
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')">
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="CreateServerModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> Create Server </h4>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <app-create-server [userId]="userId" (valueChange)='ValueChanged($event)'></app-create-server>
+            </div>
+        </div>
+    </div>
+</div>

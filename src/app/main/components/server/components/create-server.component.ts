@@ -6,15 +6,14 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpService, AuthService } from 'src/app/core/services';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.css'],
+  selector: 'app-create-server',
+  templateUrl: './create-server.component.html',
+  styleUrls: ['./create-server.component.css'],
 })
-export class CreateUserComponent implements OnInit {
+export class CreateServerComponent implements OnInit {
 
   public loading = false;
   public submitted = false;
-  public IsAdmin: any = false;
   
   @Output() valueChange = new EventEmitter();
   @Input() userId: any = '';
@@ -39,30 +38,26 @@ export class CreateUserComponent implements OnInit {
     }
   }
 
-  IsAdminChange(event: any){
-    this.IsAdmin = event.target.checked;
-  }
-
-  userForm = this.fb.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
+  serverForm = this.fb.group({
+    server_name: ['', Validators.required],
+    server_host: ['', Validators.required],
+    server_port: ['', Validators.required],
+    use_https: ['', Validators.required],
   })
 
   // Getter method to access formcontrols
   get myForm() {
-    return this.userForm.controls;
+    return this.serverForm.controls;
   }
 
   OnSubmit() {
     this.submitted = true;
-    this.userForm.markAllAsTouched();
-    if (!this.userForm.valid) {
+    this.serverForm.markAllAsTouched();
+    if (!this.serverForm.valid) {
       return;
     }
-    const dataToSubmit = { ...this.userForm.value };
+    const dataToSubmit = { ...this.serverForm.value };
     const formData = new FormData();
-
-    formData.append('is_admin', this.IsAdmin);
    
     Object.keys(dataToSubmit).forEach(key => {
       if (!formData.has(key)) {
@@ -72,10 +67,10 @@ export class CreateUserComponent implements OnInit {
 
     this.loading = true;
     if (this.userId === '' || this.userId === undefined) {
-      this.http.post('dasboard_users/', formData).subscribe((res: any) => {
+      this.http.post('servers/', formData).subscribe((res: any) => {
         if (res.status === true) {
           this.toastr.success(res.message);
-          this.valueChange.emit('User');
+          this.valueChange.emit('Server');
           this.loading = false;
           this.authService.setCurrentUser({ token: res.token });
         } else {
@@ -112,7 +107,7 @@ export class CreateUserComponent implements OnInit {
     this.http.get(`dasboard_users/${this.userId}/`).subscribe(async (res: any) => {
       if (res.status === true) {
         this.loading = false;
-        this.userForm.setValue({
+        this.serverForm.setValue({
           username: res.data.username,
           password: res.data.password,
         });

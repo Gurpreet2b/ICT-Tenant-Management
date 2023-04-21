@@ -1,0 +1,68 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <form [formGroup]="serverForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Server Name</label>
+                                <input type="text" placeholder="Enter Server Name" class="form-control"
+                                formControlName="server_name" [ngClass]="{'error': submitted && myForm.server_name.errors}">
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.server_name.errors?.required">
+                                    <sup>*</sup>Please Enter Server Name
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Server Host</label>
+                                <input type="text" placeholder="Enter Server Host" formControlName="server_host" class="form-control" 
+                                [ngClass]="{'error': submitted && myForm.server_host.errors}" />
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.server_host.errors?.required">
+                                    <sup>*</sup>Please Enter Server Host
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Server Port</label>
+                                <input type="number" placeholder="Enter Server Port" formControlName="server_port" class="form-control" 
+                                [ngClass]="{'error': submitted && myForm.server_port.errors}" />
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.server_port.errors?.required">
+                                    <sup>*</sup>Please Enter Server Port
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Use Https</label>
+                                <input type="text" placeholder="Enter Use Https" formControlName="use_https" class="form-control" 
+                                [ngClass]="{'error': submitted && myForm.use_https.errors}" />
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.use_https.errors?.required">
+                                    <sup>*</sup>Please Enter Use Https
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        <img src="assets/img/loader.gif" *ngIf="loading">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

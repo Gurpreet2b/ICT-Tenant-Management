@@ -11,8 +11,9 @@ const routes: Routes = [
       { path: 'users', loadChildren: () => import('../../../main/components/user/user.module').then(m => m.UserModule) },
       { path: 'client', loadChildren: () => import('../../../main/components/client/client.module').then(m => m.ClientModule) },
       { path: 'approval', loadChildren: () => import('../../../main/components/approval/approval.module').then(m => m.ApprovalModule) },
+      { path: 'server', loadChildren: () => import('../../../main/components/server/server.module').then(m => m.ServerModule) },
     ],
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   }
 ];
 @NgModule({
