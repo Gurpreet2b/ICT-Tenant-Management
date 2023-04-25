@@ -17,6 +17,7 @@ export class CreateClientComponent implements OnInit {
   public AlertId: any;
   public AlertType: any;
   public AlertEdit: any;
+  public ServerList: any = []
   public TenantList: any = []
 
   constructor(private http: HttpService,
@@ -31,15 +32,15 @@ export class CreateClientComponent implements OnInit {
     this.AlertId = this.activeRoute.snapshot.params['id'] || 0;
     this.AlertType = this.activeRoute.snapshot.params['type'] || '';
     this.AlertEdit = this.activeRoute.snapshot.params['edit'] || '';
-    this.GetTenantId();
+    this.GetServerList();
   }
 
-  GetTenantId() {
+  GetServerList() {
     this.loading = true;
-    this.http.get(`tenant_ids/`).subscribe(async (res: any) => {
+    this.http.get(`servers/server_list/`).subscribe(async (res: any) => {
       if (res.status === true) {
         this.loading = false;
-        this.TenantList = res.data;
+        this.ServerList = res.data;
       } else {
         this.toastr.error(res.message);
         this.loading = false;
@@ -50,12 +51,37 @@ export class CreateClientComponent implements OnInit {
     });
   }
 
+  IsServerChange(event: any){
+    let item = event.target.value;
+    this.GetTenantId(item)
+  }
+
+  GetTenantId(serverId: any) {
+    this.loading = true;
+    this.http.get(`tenant_ids/?server_id=${serverId}`).subscribe(async (res: any) => {
+      if (res.status === true) {
+        this.loading = false;
+        this.TenantList = res.data;
+      } else {
+        this.TenantList = [];
+        this.toastr.error(res.message);
+        this.loading = false;
+      }
+    }, error => {
+      this.TenantList = [];
+      this.loading = false;
+      this.authService.GetErrorCode(error);
+    });
+  }
+
   userForm = this.fb.group({
     first_name: ['', Validators.required],
     last_name: ['', Validators.required],
+    username: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     organization_name: ['', Validators.required],
     phone: ['', Validators.required],
+    server: ['', Validators.required],
     tenent_id: ['', Validators.required],
   })
 

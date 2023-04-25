@@ -4,7 +4,7 @@
             <div class="white_box mb_30">
                 <form [formGroup]="userForm" (ngSubmit)="OnSubmit()">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>First Name</label>
                                 <input type="text" placeholder="Enter First Name" class="form-control"
@@ -14,9 +14,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                    
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Last Name</label>
                                 <input type="text" placeholder="Enter Last Name" class="form-control"
@@ -27,8 +26,20 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>User Name</label>
+                                <input type="text" placeholder="Enter User Name" class="form-control"
+                                formControlName="username" [ngClass]="{'error': submitted && myForm.username.errors}">
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.username.errors?.required">
+                                    <sup>*</sup>Please Enter User Name
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Email</label>
                                 <input type="text" placeholder="Enter Email" formControlName="email" class="form-control" 
@@ -40,8 +51,9 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Organization</label>
                                 <input type="text" placeholder="Enter organization" class="form-control"
@@ -51,12 +63,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
+                   
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Phone Number</label>
-                                <input type="text" placeholder="Enter Phone Number" class="form-control"
+                                <input type="number" placeholder="Enter Phone Number" class="form-control"
                                 formControlName="phone" [ngClass]="{'error': submitted && myForm.phone.errors}">
                                 <div class="invalid-feedback" *ngIf="submitted && myForm.phone.errors?.required">
                                     <sup>*</sup>Please Enter Phone Number
@@ -64,8 +75,25 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Server</label>
+                                <select class="form-control" formControlName="server" (change)="IsServerChange($event)"
+                                [ngClass]="{'error': submitted && myForm.server.errors}">
+                                    <option selected value=""> Select Server </option>
+                                    <option *ngFor="let item of ServerList" [value]="item.id">
+                                        {{ item.server_name }}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.server.errors?.required">
+                                    <sup>*</sup>Please Select Server
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Tenent Id</label>
                                 <select class="form-control" formControlName="tenent_id" 

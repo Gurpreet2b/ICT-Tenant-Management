@@ -43,10 +43,10 @@
                                         <th>
                                             Phone Number
                                         </th>
-                                        <!-- <th>
+                                        <th>
                                             License Validity
                                         </th>
-                                        <th>
+                                        <!-- <th>
                                             Tenent Id
                                         </th>
                                         <th>
@@ -74,10 +74,12 @@
                                         <td>
                                             {{client.phone}}
                                         </td>
-                                        <!-- <td>
-                                            {{dateformat(client.license_validity)}}
-                                        </td>
                                         <td>
+                                            <span [ngStyle]="{'background-color': client.color.color }">
+                                                {{client.color.days}}
+                                            </span>
+                                        </td>
+                                        <!-- <td>
                                             {{client.tenent_id}}
                                         </td>
                                         <td>

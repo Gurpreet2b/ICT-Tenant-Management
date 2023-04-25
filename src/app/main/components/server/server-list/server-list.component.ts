@@ -18,7 +18,7 @@ export class ServerListComponent implements OnInit {
   public loading = false;
   public loadingGraph = false;
   public ServerList: any = [];
-  public userId: any;
+  public serverId: any;
 
   constructor(private http: HttpService,
     private toastr: ToastrService,
@@ -40,11 +40,15 @@ export class ServerListComponent implements OnInit {
   }
 
   onDismiss() {
-    const target = "#CreateUsersModal";
+    const target = "#CreateServerModal";
     $(target).hide();
     $('.modal-backdrop').remove();
     $("body").removeClass("modal-open");
     $("body").addClass("modal-overflow");
+  }
+
+  OnEditServer(server: any){
+    this.serverId = server.id;
   }
 
   dateformat(datas: string) {
@@ -118,7 +122,7 @@ export class ServerListComponent implements OnInit {
     this.loading = true;
     this.http.delete(`alerts_database/${id}/`).subscribe((res: any) => {
       if (res.status === true) {
-        this.toastr.success("User Deleted Successfully");
+        this.toastr.success("Server Deleted Successfully");
         this.GetServerList(this.currentPage)
         this.authService.setCurrentUser({ token: res.token });
       } else {

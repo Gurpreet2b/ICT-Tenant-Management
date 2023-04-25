@@ -14,9 +14,10 @@ export class CreateServerComponent implements OnInit {
 
   public loading = false;
   public submitted = false;
+  public useHttps: any = false;
   
   @Output() valueChange = new EventEmitter();
-  @Input() userId: any = '';
+  @Input() serverId: any = '';
 
   constructor(private http: HttpService,
     public toastr: ToastrService, private router: Router,
@@ -30,11 +31,10 @@ export class CreateServerComponent implements OnInit {
   }
 
   ngOnChanges() {
-    if (this.userId) {
-      console.log('####', this.userId);
-      // this.GetDeviceListById();
+    if (this.serverId) {
+      this.GetServerById();
     } else {
-      // this.deviceForm.reset();
+      this.serverForm.reset();
     }
   }
 
@@ -42,7 +42,6 @@ export class CreateServerComponent implements OnInit {
     server_name: ['', Validators.required],
     server_host: ['', Validators.required],
     server_port: ['', Validators.required],
-    use_https: ['', Validators.required],
   })
 
   // Getter method to access formcontrols
@@ -58,6 +57,8 @@ export class CreateServerComponent implements OnInit {
     }
     const dataToSubmit = { ...this.serverForm.value };
     const formData = new FormData();
+
+    formData.append('use_https', this.useHttps);
    
     Object.keys(dataToSubmit).forEach(key => {
       if (!formData.has(key)) {
@@ -66,11 +67,12 @@ export class CreateServerComponent implements OnInit {
     });
 
     this.loading = true;
-    if (this.userId === '' || this.userId === undefined) {
+    if (this.serverId === '' || this.serverId === undefined) {
       this.http.post('servers/', formData).subscribe((res: any) => {
         if (res.status === true) {
           this.toastr.success(res.message);
           this.valueChange.emit('Server');
+          this.serverForm.reset();
           this.loading = false;
           this.authService.setCurrentUser({ token: res.token });
         } else {
@@ -82,12 +84,12 @@ export class CreateServerComponent implements OnInit {
         this.authService.GetErrorCode(error);
       });
     } else {
-      this.http.patch(`dasboard_users/${this.userId}/`, formData).subscribe((res: any) => {
+      this.http.patch(`servers/${this.serverId}/`, formData).subscribe((res: any) => {
         if (res.status === true) {
           this.loading = false;
           const responseData = res.data;
           this.toastr.success(res.message);
-          this.valueChange.emit('User');
+          this.valueChange.emit('Server');
           this.authService.setCurrentUser({ token: res.token });
         } else {
           this.toastr.error(res.message);
@@ -101,16 +103,18 @@ export class CreateServerComponent implements OnInit {
 
   }
 
-  // Pop Alert Get By ID 
-  GetPopupAlertById() {
+  // Server Get By ID 
+  GetServerById() {
     this.loading = true;
-    this.http.get(`dasboard_users/${this.userId}/`).subscribe(async (res: any) => {
+    this.http.get(`servers/${this.serverId}/`).subscribe(async (res: any) => {
       if (res.status === true) {
         this.loading = false;
         this.serverForm.setValue({
-          username: res.data.username,
-          password: res.data.password,
+          server_name: res.data.server_name,
+          server_host: res.data.server_host,
+          server_port: res.data.server_port,
         });
+        this.useHttps = res.data.use_https,
         this.authService.setCurrentUser({ token: res.token });
       } else {
         this.toastr.error(res.message);

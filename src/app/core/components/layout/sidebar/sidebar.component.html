@@ -25,9 +25,9 @@
                                 class='fas fa-caret-right image'></i>Client List
                             </a>
                         </li>
-                        <!-- <li><a routerLink="/client/update-licence"
-                            [ngClass]="{'active': authService.TitleName === 'Update Licence'}"><i
-                                class='fas fa-caret-right image'></i>Update Licence
+                        <!-- <li><a routerLink="/server"
+                            [ngClass]="{'active': authService.TitleName === 'Server List'}"><i
+                                class='fas fa-caret-right image'></i>Server List
                             </a>
                         </li> -->
                     </ul>
@@ -45,6 +45,13 @@
                 <a routerLink="/approval" routerLinkActive="active">
                     <i class='fas fa-file-signature icon_reports'></i>
                     <span class="approval_space">Client Approval</span>
+                </a>
+            </li>
+
+            <li>
+                <a routerLink="/server" routerLinkActive="active">
+                    <i class='fas fa-file-signature icon_reports'></i>
+                    <span class="approval_space">Servers</span>
                 </a>
             </li>
 
